@@ -18,3 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('upload','ItemAuctioner@showForm');
+Route::post('upload','ItemAuctioner@store');

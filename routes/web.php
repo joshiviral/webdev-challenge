@@ -15,13 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/welcome', function () {
-    return view('pload');
-});
 
-Auth::routes();
-/*
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/upload','Test\ItemAuctionerController@importFile');
+Route::post('/upload','Test\ItemAuctionerController@uploadExcel');
 
-Route::get('upload','ItemAuctioner@showForm');
-Route::post('upload','ItemAuctioner@store');*/
+
+
+
+
+

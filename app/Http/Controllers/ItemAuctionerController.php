@@ -9,4 +9,12 @@ class ItemAuctionerController extends Controller
     {
         return view('upload');
     }
+
+    public function store(Request $request)
+    {
+        //get the csv file
+        //read
+ $upload = $request->file('upload-file');
+        //
+    }
 }

@@ -27,7 +27,58 @@ class ItemAuctionerController extends Controller
 
 		$file=fopen($filePath,'r');
 		$header = fgetcsv($file);
-		dd($header);
+		
+		$escapedHeader = [];
+
+		//validate headers
+
+		foreach($header as $key => $value)
+		{
+			$lheader = strtolower($value);
+			$escapedItem = preg_replace('/[^a-z]/','',$header);
+			array_push($escapedHeader,$escapedItem);
+
+		}
+		//Looping through other columns
+		while($columns = fgetcsv($file))
+		{
+			if($columns[0] == "")
+			{
+				continue;
+			}
+			foreach($columns as $key => &$value)
+			{
+				$value = preg_replace('/\D/','',$value);
+			}
+			
+			$data = array_combine($escapedHeader,$columns);
+
+			//setting type
+			foreach ($data as $key => &$value) {
+				$value=($key=="date" || $key=="category")?(integer)$value: (float)$value;
+			   }
+			//Table update
+
+			$date = $data['date'];
+			$category = $data['category'];
+			$lotTitle = $data['lottitle'];
+			$lotLocation = $data['lotlocation'];
+			$lotCondition = $data['lotcondition'];
+			$preTaxAmount = $data['pretaxamount'];
+			$taxName = $data['taxname'];
+			$taxAmount = $data['taxamount'];
+
+			$itemAuction = ItemAuction::firstOrNew(['date'=>$date,'category'=>$category]);
+			$itemAuction->lottitle = $lotTitle;
+			$itemAuction->lotlocation = $lotLocation;
+			$itemAuction->lotcondition = $lotCondition;
+			$itemAuction->pretaxamount = $preTaxAmount;
+			$itemAuction->taxname = $taxName;
+			$itemAuction->taxamount = $taxName;
+			$itemAuction->save();
+
+
+		}
 	}
 
 }
